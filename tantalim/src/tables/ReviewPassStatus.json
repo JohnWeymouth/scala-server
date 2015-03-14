@@ -4,28 +4,25 @@
   "columns": [
     {
       "name": "ReviewPassStatusCode",
+      "label": "Code",
       "required": true,
       "updateable": false
     },
     {
       "name": "ReviewPassStatus",
-      "label": "Review Pass Status",
-      "required": true,
-      "updateable": false
+      "required": true
     },
     {
       "name": "ActiveFlag",
-      "label": "Active Flag",
+      "label": "Active",
       "dataType": "Boolean",
       "columnDefault": "true",      
-      "required": true,
-      "updateable": true
+      "required": true
     },
     {
       "name": "DisplaySequence",
-      "label": "Display Sequence",
-      "required": false,
-      "updateable": true
+      "label": "Order",
+      "dataType": "Integer"
     }
   ]
 }

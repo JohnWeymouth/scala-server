@@ -14,6 +14,18 @@
       "items": [
         {
           "page": "AttachmentTypes"
+        },
+        {
+          "page": "Issues"
+        },
+        {
+          "page": "IssueTypes"
+        },
+        {
+          "page": "ReviewPassStatuses"
+        },
+        {
+          "page": "ReviewTypes"
         }
       ]
     },

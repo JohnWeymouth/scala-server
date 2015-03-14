@@ -4,28 +4,25 @@
   "columns": [
     {
       "name": "ReviewTypeCode",
+      "label": "Code",
       "required": true,
       "updateable": false
     },
     {
       "name": "ReviewType",
-      "label": "Review Type",
-      "required": true,
-      "updateable": false
+      "required": true
     },
     {
       "name": "ActiveFlag",
-      "label": "Active Flag",
+      "label": "Active",
       "dataType": "Boolean",
       "columnDefault": "true",      
-      "required": true,
-      "updateable": true
+      "required": true
     },
     {
       "name": "DisplaySequence",
-      "label": "Display Sequence",
-      "required": false,
-      "updateable": true
+      "label": "Order",
+      "dataType": "Integer"
     }
   ]
 }

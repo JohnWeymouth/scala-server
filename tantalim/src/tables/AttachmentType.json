@@ -10,7 +10,6 @@
     },
     {
       "name": "AttachmentType",
-      "label": "Attachment Type",
       "required": true
     },
     {

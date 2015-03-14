@@ -4,34 +4,30 @@
   "columns": [
     {
       "name": "IssueCode",
+      "label": "Code",
       "required": true,
       "updateable": false
     },
     {
       "name": "Issue",
-      "label": "Issue",
-      "required": true,
-      "updateable": false
+      "required": true
     },
     {
       "name": "IssueTypeCode",
-      "label": "Issue Type Code",
       "required": true,
       "updateable": false
     },
     {
       "name": "ActiveFlag",
-      "label": "Active Flag",
+      "label": "Active",
       "dataType": "Boolean",
       "columnDefault": "true",      
-      "required": true,
-      "updateable": true
+      "required": true
     },
     {
       "name": "DisplaySequence",
-      "label": "Display Sequence",
-      "required": false,
-      "updateable": true
+      "label": "Order",
+      "dataType": "Integer"
     }
   ],
   "joins": [
