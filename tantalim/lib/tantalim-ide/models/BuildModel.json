@@ -1,4 +1,57 @@
 {
   "basisTable": "Model",
-  "fields": []
+  "fields": [
+    {
+      "name": "ModelID",
+      "basisColumn": "ModelID"
+    },
+    {
+      "name": "ModelName",
+      "basisColumn": "Name"
+    },
+    {
+      "name": "ModelParentID",
+      "basisColumn": "ParentID"
+    },
+    {
+      "name": "ModelBasisTable",
+      "basisColumn": "BasisTable"
+    },
+    {
+      "name": "ModelLimit",
+      "basisColumn": "Limit"
+    },
+    {
+      "name": "ModelParentField",
+      "basisColumn": "ParentField"
+    },
+    {
+      "name": "ModelChildField",
+      "basisColumn": "ChildField"
+    },
+    {
+      "name": "ModelPreSave",
+      "basisColumn": "PreSave"
+    },
+    {
+      "name": "ModelFilter",
+      "basisColumn": "Filter"
+    },
+    {
+      "name": "ModelAllowInsert",
+      "basisColumn": "AllowInsert"
+    },
+    {
+      "name": "ModelAllowUpdate",
+      "basisColumn": "AllowUpdate"
+    },
+    {
+      "name": "ModelAllowDelete",
+      "basisColumn": "AllowDelete"
+    }
+  ],
+  "children": [
+
+  ],
+  "filter": "ModelParentID IsEmpty"
 }

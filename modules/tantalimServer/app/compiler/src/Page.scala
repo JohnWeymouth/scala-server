@@ -1,17 +1,20 @@
-package models.src
+package compiler.src
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.Reads._
 import play.api.libs.json._
 
-case class PageJson(title: String,
-                    name: Option[String],
-                    model: Option[String],
+case class PageJson(title: Option[String],
                     icon: Option[String],
                     css: Option[String],
-                    viewMode: Option[String],
-                    fields: Option[Seq[PageFieldJson]],
-                    children: Option[Seq[PageJson]])
+                    sections: Option[Seq[PageSectionJson]])
+
+case class PageSectionJson(name: String,
+                           title: Option[String],
+                           model: Option[String],
+                           viewMode: Option[String],
+                           fields: Option[Seq[PageFieldJson]],
+                           sections: Option[Seq[PageSectionJson]])
 
 case class PageFieldJson(name: String,
                          showInFormView: Option[Boolean],
@@ -30,29 +33,30 @@ case class PageFieldJson(name: String,
                           )
 
 case class PageFieldSelectJson(model: String,
-                               targetID: String,
-                               sourceValue: String,
-                               where: Option[String],
-                               otherMappings: Option[String]
+                               sourceField: String,
+                               targetID: Option[String],
+                               fields: Option[Map[String, String]],
+                               filter: Option[String]
                                 )
 
 case class PageFieldLinkJson(page: String, filter: String)
 
 object PageJson {
-  def empty = {
-    new PageJson("", None, None, None, None, None, None, None)
-  }
-
   implicit def pageReads: Reads[PageJson] = (
-    (JsPath \ "title").read[String] and
-      (JsPath \ "name").readNullable[String] and
-      (JsPath \ "model").readNullable[String] and
+    (JsPath \ "title").readNullable[String] and
       (JsPath \ "icon").readNullable[String] and
       (JsPath \ "css").readNullable[String] and
+      (JsPath \ "sections").lazyReadNullable(Reads.seq[PageSectionJson](pageSectionReads))
+    ).apply(PageJson.apply _)
+
+  implicit def pageSectionReads: Reads[PageSectionJson] = (
+    (JsPath \ "name").read[String] and
+      (JsPath \ "title").readNullable[String] and
+      (JsPath \ "model").readNullable[String] and
       (JsPath \ "viewMode").readNullable[String] and
       (JsPath \ "fields").readNullable[Seq[PageFieldJson]] and
-      (JsPath \ "children").lazyReadNullable(Reads.seq[PageJson](pageReads))
-    ).apply(PageJson.apply _)
+      (JsPath \ "sections").lazyReadNullable(Reads.seq[PageSectionJson](pageSectionReads))
+    ).apply(PageSectionJson.apply _)
 
   implicit def pageFieldReads: Reads[PageFieldJson] = (
     (JsPath \ "name").read[String] and
@@ -73,10 +77,10 @@ object PageJson {
 
   implicit def selectReads: Reads[PageFieldSelectJson] = (
     (JsPath \ "model").read[String] and
-      (JsPath \ "targetID").read[String] and
-      (JsPath \ "sourceValue").read[String] and
-      (JsPath \ "where").readNullable[String] and
-      (JsPath \ "otherMappings").readNullable[String]
+      (JsPath \ "sourceField").read[String] and
+      (JsPath \ "targetID").readNullable[String] and
+      (JsPath \ "fields").readNullable[Map[String, String]] and
+      (JsPath \ "filter").readNullable[String]
     ).apply(PageFieldSelectJson.apply _)
 
   implicit def linkReads: Reads[PageFieldLinkJson] = (

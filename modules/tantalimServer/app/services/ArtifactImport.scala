@@ -1,5 +1,6 @@
 package services
 
+import com.tantalim.nodes.{TntString, SmartNodeSet, SmartNodeInstance}
 import compiler.ModelCompiler
 import data._
 import com.tantalim.models.{ArtifactType, Model, ModelField}
@@ -43,7 +44,7 @@ class ArtifactImport(artifactType: ArtifactType) extends DataReader with DataSav
         }
 
         val artifactUniqueNameField = "name"
-        if (smartInstance.get(artifactUniqueNameField).isEmpty) {
+        if (smartInstance.isRoot && smartInstance.get(artifactUniqueNameField).isEmpty) {
           smartInstance.set(artifactUniqueNameField, TntString(smartInstance.model.name))
         }
 

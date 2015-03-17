@@ -3,6 +3,7 @@ package services
 import java.sql.ResultSet
 
 import com.tantalim.filter.compiler.CompiledFilter
+import com.tantalim.nodes._
 import data._
 import com.tantalim.models._
 
@@ -33,6 +34,7 @@ trait DataReader extends Database {
       orderBy = orderBy,
       limit = model.limit)
 
+    sqlBuilder = parseFilterForSql(sqlBuilder, model.fields, model.filter)
     sqlBuilder = parseFilterForSql(sqlBuilder, model.fields, filter)
 
     val rs = query(sqlBuilder.toPreparedStatement, sqlBuilder.parameters)
@@ -47,7 +49,7 @@ trait DataReader extends Database {
               case None => -1
             }
           }
-          val filterForChildModel = childModel.parentLink.get.childField + " In " + parentIDs.mkString(",")
+          val filterForChildModel = childModel.parentLink.get.childField + " In (" + parentIDs.mkString(",") + ")"
           val childRows = queryModelData(childModel, 1, Some(filterForChildModel), childModel.orderBy)
           addChildRowsToParent(resultSet, childRows)
       }
@@ -56,18 +58,21 @@ trait DataReader extends Database {
   }
 
   private def parseFilterForSql(sqlBuilder: SqlBuilder, modelFields: Map[String, ModelField], filter: Option[String]): SqlBuilder = {
-    if (filter.isDefined) {
+    if (filter.isDefined && filter.get.trim.nonEmpty) {
       val compiler = new com.tantalim.filter.compiler.CompileFilter(filter.get, modelFields)
       compiler.parse() match {
-        case CompiledFilter(where: String, params: List[Any]) => if (params.nonEmpty) {
-          return sqlBuilder.copy(
-            where = Some(where),
-            parameters = params
+        case CompiledFilter(where: String, params: List[Any]) =>
+          sqlBuilder.copy(
+            where =
+              if (sqlBuilder.where.isEmpty) Some(where)
+              else if (where.isEmpty) sqlBuilder.where
+              else Some(s"(${sqlBuilder.where.get}) AND ($where)"),
+            parameters = sqlBuilder.parameters ++ params
           )
-        }
       }
+    } else {
+      sqlBuilder
     }
-    sqlBuilder
   }
 
   private def convertResultSetToDataRows(model: Model, rs: ResultSet) = {

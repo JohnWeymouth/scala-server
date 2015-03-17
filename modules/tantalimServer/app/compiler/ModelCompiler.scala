@@ -2,7 +2,7 @@ package compiler
 
 import com.tantalim.models._
 import com.tantalim.util.TantalimException
-import models.src.{FieldDefaultJson, ModelFieldJson, ModelJson}
+import compiler.src.{FieldDefaultJson, ModelFieldJson, ModelJson}
 import play.api.libs.json.{JsError, JsSuccess}
 import services.ArtifactService
 
@@ -86,7 +86,8 @@ trait ModelCompiler extends ArtifactService with TableCompiler {
       allowInsert = model.allowInsert.getOrElse(basisTable.allowInsert),
       allowUpdate = model.allowUpdate.getOrElse(basisTable.allowUpdate),
       allowDelete = model.allowDelete.getOrElse(basisTable.allowDelete),
-      preSave = model.preSave
+      preSave = model.preSave,
+      filter = model.filter
     )
   }
 

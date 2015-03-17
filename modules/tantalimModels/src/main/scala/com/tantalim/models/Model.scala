@@ -2,17 +2,18 @@ package com.tantalim.models
 
 case class Model(name: String,
                  basisTable: Table,
-                 limit: Int,
-                 instanceID: Option[String],
+                 limit: Int = 0,
+                 instanceID: Option[String] = None,
                  fields: Map[String, ModelField],
-                 children: Map[String, Model],
-                 steps: scala.collection.Map[Int, ModelStep], // I'm not sure why just ": Map[Int," ... won't work here
-                 parentLink: Option[ModelParentLink],
-                 orderBy: Seq[ModelOrderBy],
+                 children: Map[String, Model] = Map.empty,
+                 steps: scala.collection.Map[Int, ModelStep] = Map.empty, // I'm not sure why just ": Map[Int," ... won't work here
+                 parentLink: Option[ModelParentLink] = None,
+                 orderBy: Seq[ModelOrderBy] = Seq.empty,
                  allowInsert: Boolean = true,
                  allowUpdate: Boolean = true,
                  allowDelete: Boolean = true,
-                 preSave: Option[String] = None
+                 preSave: Option[String] = None,
+                 filter: Option[String] = None
                   )
 
 case class ModelField(name: String,
@@ -22,7 +23,9 @@ case class ModelField(name: String,
                       required: Boolean = false,
                       fieldDefault: Option[FieldDefault] = None,
                       export: Boolean = true
-                       )
+                       ) {
+  def dataType: DataType = basisColumn.dataType
+}
 
 case class FieldDefault(value: String,
                         overwrite: Boolean,
